@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Function to fetch characters from the API
   function fetchCharacters() {
-    fetch('http://localhost:3000/characters')
+    fetch('http://localhost:3000/characters') // Ensure this URL is correct and the server is running
       .then(response => response.json())
       .then(characters => {
         allCharacters = characters;
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     characters.forEach(character => {
       const span = document.createElement('span');
-      span.textContent = character.name;
+      span.textContent = character.name || 'Unnamed Character'; // Ensure name is displayed even if it's missing
       span.dataset.id = character.id;
 
       span.addEventListener('click', () => {
@@ -78,7 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
     currentCharacter = character;
 
     nameEl.textContent = character.name;
-    imageEl.src = character.image;
+    const imageUrl = character.image ? character.image : 'default-image-url.jpg';
+    console.log(`Displaying image for ${character.name}: ${imageUrl}`); // Log the image URL
+    if (!character.image) {
+      console.warn(`Image URL missing for ${character.name}, using default image.`);
+    }
+    imageEl.src = imageUrl;
     imageEl.alt = character.name;
     voteCountEl.textContent = character.votes;
   }
